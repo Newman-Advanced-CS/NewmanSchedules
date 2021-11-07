@@ -18,12 +18,13 @@ public class Window {
         toDisplay.setVisible(true);
     }
 
-    public static void AddText(JFrame window, String text, Dimension size, String layout, int swingConstant, int fontType)
+    public static void AddText(JFrame window, JLabel text, String layout)
     {
-        JLabel label = new JLabel(text, swingConstant);
-        Font font = new Font("Roboto", fontType,12);
-        label.setFont(font);
-        label.setPreferredSize(size);
-        window.getContentPane().add(label, layout);
+        window.getContentPane().add(text, layout);
+    }
+
+    public static void AddPanel(JFrame window, JPanel panel, String layout)
+    {
+        window.add(panel, layout);
     }
 }
