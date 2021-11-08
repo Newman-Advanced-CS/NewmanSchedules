@@ -52,5 +52,13 @@ public class NewmanSchedules {
 
         // Display it
         Window.DisplayWindow(mainWindow);
+
+        // Test web request
+        try{
+            WebRequest.GET("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+        }catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 }
