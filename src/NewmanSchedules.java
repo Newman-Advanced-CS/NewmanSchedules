@@ -54,11 +54,14 @@ public class NewmanSchedules {
         Window.DisplayWindow(mainWindow);
 
         // Test web request
+        String testContents = "";
         try{
-            WebRequest.GET("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY");
+            testContents = WebRequest.GET("/getUser.php?ID=0&pass=password");
         }catch (IOException e)
         {
             e.printStackTrace();
         }
+        JLabel test = Text.CreateLabel(testContents, new Dimension(200, 500), SwingConstants.LEFT);
+        Window.AddText(mainWindow, test, BorderLayout.AFTER_LAST_LINE);
     }
 }
