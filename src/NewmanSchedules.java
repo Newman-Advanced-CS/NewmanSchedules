@@ -60,6 +60,7 @@ public class NewmanSchedules {
         }catch (IOException e)
         {
             e.printStackTrace();
+            return;
         }
         JLabel test = Text.CreateLabel(testContents, new Dimension(200, 500), SwingConstants.LEFT);
         Window.AddText(mainWindow, test, BorderLayout.AFTER_LAST_LINE);
