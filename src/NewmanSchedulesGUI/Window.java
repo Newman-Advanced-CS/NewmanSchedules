@@ -18,13 +18,8 @@ public class Window {
         toDisplay.setVisible(true);
     }
 
-    public static void AddText(JFrame window, JLabel text, String layout)
+    public static void AddComponent(JFrame window, Component component, String layout)
     {
-        window.getContentPane().add(text, layout);
-    }
-
-    public static void AddPanel(JFrame window, JPanel panel, String layout)
-    {
-        window.add(panel, layout);
+        window.getContentPane().add(component, layout);
     }
 }

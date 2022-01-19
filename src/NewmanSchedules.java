@@ -1,6 +1,7 @@
 import NewmanSchedulesGUI.Panel;
 import NewmanSchedulesGUI.Text;
 import NewmanSchedulesGUI.Window;
+import NewmanSchedulesGUI.TextInput;
 
 import javax.swing.*;
 import javax.swing.UIManager;
@@ -24,7 +25,50 @@ public class NewmanSchedules {
             e.printStackTrace();
         }
 
-        MainWindow();
+        LoginWindow();
+    }
+
+    // Login window
+    static int loginWIDTH = 400;
+    static int loginHEIGHT = 100;
+    public static void LoginWindow()
+    {
+        // Create window
+        JFrame loginWindow = Window.CreateWindow("Newman Schedules");
+        loginWindow.setMinimumSize(new Dimension(loginWIDTH, loginHEIGHT));
+        loginWindow.getContentPane().setBackground(Color.WHITE);
+        loginWindow.setResizable(false);
+
+        // Add header
+        JPanel header = Panel.CreatePanel(WIDTH, 50, false);
+        header.setBackground(Color.BLUE);
+        JLabel label = Text.CreateLabel("Login", new Dimension(300, 40), SwingConstants.CENTER);
+        label.setFont(ubuntuFontBold);
+        label.setForeground(Color.WHITE);
+        Panel.AddComponent(header, label, BorderLayout.CENTER);
+        Window.AddComponent(loginWindow, header, BorderLayout.PAGE_START);
+
+        // Login screen
+        JPanel login = Panel.CreatePanel(loginWIDTH/2, loginHEIGHT/2, false);
+        login.setBackground(Color.WHITE);
+        Dimension boxDimensions = new Dimension(10, 15);
+        float[] textBoxColor = new float[3];
+        Color.RGBtoHSB(230, 230, 230, textBoxColor);
+
+        JTextField emailBox = TextInput.CreateTextInput("Email...", boxDimensions, ubuntuFont);
+        JTextField passBox = TextInput.CreatePasswordInput("", boxDimensions, ubuntuFont);
+        emailBox.setBackground(Color.getHSBColor(textBoxColor[0], textBoxColor[1], textBoxColor[2]));
+        passBox.setBackground(Color.getHSBColor(textBoxColor[0], textBoxColor[1], textBoxColor[2]));
+        Panel.AddComponent(login, emailBox, BorderLayout.PAGE_START);
+        Panel.AddComponent(login, passBox, BorderLayout.PAGE_END);
+
+        JButton submit = new JButton("LOGIN");
+        submit.setSize(new Dimension(loginWIDTH, loginHEIGHT/2));
+        Window.AddComponent(loginWindow, submit, BorderLayout.SOUTH);
+        Window.AddComponent(loginWindow, login, BorderLayout.CENTER);
+
+        // Display it
+        Window.DisplayWindow(loginWindow);
     }
 
     // Main window
@@ -38,17 +82,17 @@ public class NewmanSchedules {
         mainWindow.setResizable(false);
 
         // Add header
-        JPanel header = Panel.CreatePanel(WIDTH, 50);
+        JPanel header = Panel.CreatePanel(WIDTH, 50, false);
         header.setBackground(Color.BLUE);
         JLabel label = Text.CreateLabel("Newman Schedules", new Dimension(300, 40), SwingConstants.CENTER);
         label.setFont(ubuntuFontBold);
         label.setForeground(Color.WHITE);
-        Panel.AddText(header, label, BorderLayout.CENTER);
-        Window.AddPanel(mainWindow, header, BorderLayout.NORTH);
+        Panel.AddComponent(header, label, BorderLayout.CENTER);
+        Window.AddComponent(mainWindow, header, BorderLayout.NORTH);
 
         // Center Text
         JLabel text = Text.CreateLabel("Loading Schedule... (jk not really, creating GUI in java is hard)", new Dimension(300, 40), SwingConstants.CENTER);
-        Window.AddText(mainWindow, text, BorderLayout.CENTER);
+        Window.AddComponent(mainWindow, text, BorderLayout.CENTER);
 
         // Display it
         Window.DisplayWindow(mainWindow);
@@ -62,7 +106,8 @@ public class NewmanSchedules {
             e.printStackTrace();
             return;
         }
+        System.out.println(testContents);
         JLabel test = Text.CreateLabel(testContents, new Dimension(200, 500), SwingConstants.LEFT);
-        Window.AddText(mainWindow, test, BorderLayout.AFTER_LAST_LINE);
+        Window.AddComponent(mainWindow, test, BorderLayout.AFTER_LAST_LINE);
     }
 }
