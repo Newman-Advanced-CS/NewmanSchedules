@@ -1,5 +1,5 @@
 <?php
-    $db = new SQLite3("db.db");
+    $db = new SQLiteDatabase("db.db");
     $userID = $_GET["ID"];
     $pass = $_GET["pass"];
 
