@@ -3,7 +3,7 @@
     $email = $_GET["email"];
     $pass = $_GET["pass"];
 
-    $query = "SELECT * FROM Users WHERE Email == ".$email;
+    $query = 'SELECT * FROM Users WHERE Email == "'.$email.'"';
     $result = $db->query($query)->fetchArray();
 
     if($result["Password"] == $pass)
