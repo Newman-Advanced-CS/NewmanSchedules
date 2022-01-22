@@ -1,12 +1,12 @@
 import NewmanSchedulesGUI.Panel;
 import NewmanSchedulesGUI.Text;
-import NewmanSchedulesGUI.Window;
 import NewmanSchedulesGUI.TextInput;
+import NewmanSchedulesGUI.Window;
 
 import javax.swing.*;
-import javax.swing.UIManager;
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 
 public class NewmanSchedules {
 
@@ -25,13 +25,13 @@ public class NewmanSchedules {
             e.printStackTrace();
         }
 
-        LoginWindow();
+        LoginWindow(false);
     }
 
     // Login window
     static int loginWIDTH = 400;
     static int loginHEIGHT = 100;
-    public static void LoginWindow()
+    public static void LoginWindow(boolean retry)
     {
         // Create window
         JFrame loginWindow = Window.CreateWindow("Newman Schedules");
@@ -62,10 +62,37 @@ public class NewmanSchedules {
         Panel.AddComponent(login, emailBox, BorderLayout.PAGE_START);
         Panel.AddComponent(login, passBox, BorderLayout.PAGE_END);
 
+        // Button
         JButton submit = new JButton("LOGIN");
         submit.setSize(new Dimension(loginWIDTH, loginHEIGHT/2));
+        submit.addActionListener(e -> {
+            // Get input and perform web request
+            String email = emailBox.getText();
+            String pass = passBox.getText();
+
+            String loginResult = "";
+            try {
+                loginResult = WebRequest.GET("/login.php?email=" + email + "&pass=" + pass);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            System.out.println(loginResult);
+
+            if(loginResult.equals("false"))
+            {
+                // Reload window
+                LoginWindow(true);
+            }
+        });
+
         Window.AddComponent(loginWindow, submit, BorderLayout.SOUTH);
         Window.AddComponent(loginWindow, login, BorderLayout.CENTER);
+
+        if(retry)
+        {
+            JLabel retryAlert = Text.CreateLabel("Incorrect Email/Password", new Dimension(loginWIDTH, loginHEIGHT/4), SwingConstants.CENTER);
+            Window.AddComponent(loginWindow, retryAlert, BorderLayout.SOUTH);
+        }
 
         // Display it
         Window.DisplayWindow(loginWindow);

@@ -10,6 +10,6 @@
     {
         echo $result["ID"];
     }else{
-        echo "Incorrect Password";
+        echo "false";
     }
 ?>

@@ -5,7 +5,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class WebRequest {
-    public static String hostSite = "http://127.0.0.1:5500/";
+    public static String hostSite = "http://localhost/NewmanSchedules/Website/";
 
     // This took forever. Why does Java make something so simple so complex?!?!
     public static String GET(String url) throws IOException {
