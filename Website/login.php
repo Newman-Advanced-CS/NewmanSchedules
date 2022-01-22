@@ -4,12 +4,14 @@
     $pass = $_GET["pass"];
 
     $query = 'SELECT * FROM Users WHERE Email == "'.$email.'"';
-    $result = $db->query($query)->fetchArray();
-
-    if($result["Password"] == $pass)
+    if($result = $db->query($query)->fetchArray())
     {
-        echo $result["ID"];
-    }else{
-        echo "false";
+        if($result["Password"] == $pass)
+        {
+            echo $result["ID"];
+            return;
+        }
     }
+
+    echo "false";
 ?>
