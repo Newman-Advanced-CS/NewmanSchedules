@@ -11,7 +11,7 @@
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 // process the line read.
-                $classData = split(",", $line);
+                $classData = explode(',', $line);
                 $classTime = $classData[0];
                 $classQuery = 'SELECT * FROM Class WHERE ID == "'.$classData[1].'"';
                 $classDB = $db->query($classQuery)->fetchArray();
