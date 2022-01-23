@@ -9,8 +9,8 @@
         // open schedule file
         $path = "./schedules/".$userID;
         $handle = fopen($path, "r");
-        while (!feof($handle)) {
-            $line = fgets($handle, filesize($path));
+        while (!$handle->eof()) {
+            $line = $handle->fgets();
 
             // process the line read.
             $classData = explode(',', $line);

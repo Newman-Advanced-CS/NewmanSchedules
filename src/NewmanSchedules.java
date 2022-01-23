@@ -137,7 +137,7 @@ public class NewmanSchedules {
         }
 
         // Center Text
-        JLabel text = Text.CreateLabel(schedule, new Dimension(WIDTH/2, 40), SwingConstants.CENTER);
+        JLabel text = Text.CreateLabel(schedule, new Dimension(WIDTH/2, HEIGHT), SwingConstants.CENTER);
         Window.AddComponent(mainWindow, text, BorderLayout.CENTER);
 
         // Display it
