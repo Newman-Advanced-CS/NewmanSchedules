@@ -18,6 +18,11 @@ public class Window {
         toDisplay.setVisible(true);
     }
 
+    public static void RemoveWindow(JFrame toRemove)
+    {
+        toRemove.setVisible(false);
+    }
+
     public static void AddComponent(JFrame window, Component component, String layout)
     {
         window.getContentPane().add(component, layout);

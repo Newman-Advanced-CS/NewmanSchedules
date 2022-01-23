@@ -8,7 +8,7 @@
 
     if($result["Password"] == $pass)
     {
-        echo "First:".$result["FirstName"].";Last:".$result["LastName"].";Year:".$result["Year"].";Type:".$result["Type"];
+        echo $result["FirstName"].";".$result["LastName"].";".$result["Year"].";".$result["Type"];
     }else{
         echo "Incorrect Password";
     }

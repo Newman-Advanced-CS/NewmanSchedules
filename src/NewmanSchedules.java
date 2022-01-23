@@ -5,34 +5,39 @@ import NewmanSchedulesGUI.Window;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class NewmanSchedules {
 
+    // current session user
+    protected static User user;
+
+    // Fonts
     static Font ubuntuFontBold;
     static Font ubuntuFont;
-    public static void main(String[] args)  {
+
+    public static void main(String[] args) {
         // Set theme
-        try{
+        try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
 
             // Load font
             ubuntuFontBold = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/Ubuntu-Bold.ttf")).deriveFont(15f);
             ubuntuFont = Font.createFont(Font.TRUETYPE_FONT, new File("src/Resources/Ubuntu-Regular.ttf")).deriveFont(15f);
-        }catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        LoginWindow(false);
+        LoginWindow();
     }
 
     // Login window
     static int loginWIDTH = 400;
     static int loginHEIGHT = 100;
-    public static void LoginWindow(boolean retry)
-    {
+
+    public static void LoginWindow() {
         // Create window
         JFrame loginWindow = Window.CreateWindow("Newman Schedules");
         loginWindow.setMinimumSize(new Dimension(loginWIDTH, loginHEIGHT));
@@ -49,7 +54,7 @@ public class NewmanSchedules {
         Window.AddComponent(loginWindow, header, BorderLayout.PAGE_START);
 
         // Login screen
-        JPanel login = Panel.CreatePanel(loginWIDTH/2, loginHEIGHT/2, false);
+        JPanel login = Panel.CreatePanel(loginWIDTH / 2, loginHEIGHT / 2, false);
         login.setBackground(Color.WHITE);
         Dimension boxDimensions = new Dimension(10, 15);
         float[] textBoxColor = new float[3];
@@ -64,7 +69,7 @@ public class NewmanSchedules {
 
         // Button
         JButton submit = new JButton("LOGIN");
-        submit.setSize(new Dimension(loginWIDTH, loginHEIGHT/2));
+        submit.setSize(new Dimension(loginWIDTH, loginHEIGHT / 2));
         submit.addActionListener(e -> {
             // Get input and perform web request
             String email = emailBox.getText();
@@ -78,21 +83,26 @@ public class NewmanSchedules {
             }
             System.out.println(loginResult);
 
-            if(loginResult.equals("false"))
-            {
-                // Reload window
-                LoginWindow(true);
+            Window.RemoveWindow(loginWindow);
+            if (loginResult.equals("false")) {
+                // Alert
+                Alert("Incorrect Email/Password", e1 -> {
+                    LoginWindow();
+                });
+            }else{
+                // Log in
+                try {
+                    user = new User(Integer.parseInt(loginResult), pass);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                // Load main window
+                MainWindow();
             }
         });
 
         Window.AddComponent(loginWindow, submit, BorderLayout.SOUTH);
         Window.AddComponent(loginWindow, login, BorderLayout.CENTER);
-
-        if(retry)
-        {
-            JLabel retryAlert = Text.CreateLabel("Incorrect Email/Password", new Dimension(loginWIDTH, loginHEIGHT/4), SwingConstants.CENTER);
-            Window.AddComponent(loginWindow, retryAlert, BorderLayout.SOUTH);
-        }
 
         // Display it
         Window.DisplayWindow(loginWindow);
@@ -101,17 +111,18 @@ public class NewmanSchedules {
     // Main window
     static int WIDTH = 500;
     static int HEIGHT = 700;
-    public static void MainWindow(){
+
+    public static void MainWindow() {
         // Create window
         JFrame mainWindow = Window.CreateWindow("Newman Schedules");
         mainWindow.setMinimumSize(new Dimension(WIDTH, HEIGHT));
         mainWindow.getContentPane().setBackground(Color.WHITE);
         mainWindow.setResizable(false);
 
-        // Add header
+        // Add header with users first name
         JPanel header = Panel.CreatePanel(WIDTH, 50, false);
         header.setBackground(Color.BLUE);
-        JLabel label = Text.CreateLabel("Newman Schedules", new Dimension(300, 40), SwingConstants.CENTER);
+        JLabel label = Text.CreateLabel("Hi " + user.getFirstName(), new Dimension(300, 40), SwingConstants.CENTER);
         label.setFont(ubuntuFontBold);
         label.setForeground(Color.WHITE);
         Panel.AddComponent(header, label, BorderLayout.CENTER);
@@ -123,18 +134,25 @@ public class NewmanSchedules {
 
         // Display it
         Window.DisplayWindow(mainWindow);
+    }
 
-        // Test web request
-        String testContents = "";
-        try{
-            testContents = WebRequest.GET("/getUser.php?ID=0&pass=password");
-        }catch (IOException e)
-        {
-            e.printStackTrace();
-            return;
-        }
-        System.out.println(testContents);
-        JLabel test = Text.CreateLabel(testContents, new Dimension(200, 500), SwingConstants.LEFT);
-        Window.AddComponent(mainWindow, test, BorderLayout.AFTER_LAST_LINE);
+    public static void Alert(String prompt, ActionListener callback)
+    {
+        JFrame alert = Window.CreateWindow("Alert");
+        alert.setMinimumSize(new Dimension(100, 100));
+        alert.getContentPane().setBackground(Color.WHITE);
+        alert.setResizable(false);
+
+        JLabel retryAlert = Text.CreateLabel(prompt, new Dimension(loginWIDTH, loginHEIGHT / 4), SwingConstants.CENTER);
+        Window.AddComponent(alert, retryAlert, BorderLayout.CENTER);
+
+        JButton OK = new JButton("OK");
+        OK.addActionListener(callback);
+        OK.addActionListener(e -> {
+            Window.RemoveWindow(alert);
+        });
+        Window.AddComponent(alert, OK, BorderLayout.SOUTH);
+
+        Window.DisplayWindow(alert);
     }
 }
