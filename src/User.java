@@ -25,7 +25,7 @@ public class User {
         this.lastName = dataArray[1];
         this.year = Integer.parseInt(dataArray[2]);
         this.type = UserType.valueOf(dataArray[3]);
-        this.password = dataArray[4];
+        this.password = pass;
     }
 
     // Getters

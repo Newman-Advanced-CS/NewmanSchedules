@@ -9,7 +9,9 @@
         // open schedule file
         $handle = fopen("./schedules/".$userID, "r");
         if ($handle) {
-            while (($line = fgets($handle)) !== false) {
+            while (!feof($handle)) {
+                $line = fgets($handle);
+
                 // process the line read.
                 $classData = explode(',', $line);
                 $classTime = $classData[0];
