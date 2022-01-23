@@ -7,10 +7,10 @@
     if($result = $db->query($query)->fetchArray())
     {
         // open schedule file
-        $path = "./schedules/".$userID;
+        $path = "./schedules/".$userID.".txt";
         $handle = fopen($path, "r");
-        while (!$handle->eof()) {
-            $line = $handle->fgets();
+        while (! feof($handle)) {
+            $line = fgets($handle, filesize($path));
 
             // process the line read.
             $classData = explode(',', $line);
