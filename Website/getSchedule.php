@@ -15,7 +15,7 @@
                 $classTime = $classData[0];
                 $classQuery = 'SELECT * FROM Class WHERE ID == "'.$classData[1].'"';
                 $classDB = $db->query($classQuery)->fetchArray();
-                $teacherQuery = 'SELECT * FROM Users WHERE ID =='.$classDB["Teacher"];
+                $teacherQuery = "SELECT * FROM Users WHERE ID == ".$classDB["Teacher"];
                 $teacherDB = $db->query($teacherQuery)->fetchArray();
                 echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"];
             }
