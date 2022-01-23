@@ -7,7 +7,7 @@
     if($result = $db->query($query)->fetchArray())
     {
         // open schedule file
-        $handle = fopen($userID, "r");
+        $handle = fopen("./schedules/".$userID, "r");
         if ($handle) {
             while (($line = fgets($handle)) !== false) {
                 // process the line read.
