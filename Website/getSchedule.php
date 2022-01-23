@@ -8,26 +8,24 @@
     {
         // open schedule file
         $handle = fopen("./schedules/".$userID, "r");
-        if ($handle) {
-            while (!feof($handle)) {
-                $line = fgets($handle);
+        while (!feof($handle)) {
+            $line = fgets($handle);
 
-                // process the line read.
-                $classData = explode(',', $line);
-                $classTime = $classData[0];
-                $classQuery = 'SELECT * FROM Class WHERE ID == "'.$classData[1].'"';
-                if($classDB = $db->query($classQuery)->fetchArray())
+            // process the line read.
+            $classData = explode(',', $line);
+            $classTime = $classData[0];
+            $classQuery = 'SELECT * FROM Class WHERE ID == "'.$classData[1].'"';
+            if($classDB = $db->query($classQuery)->fetchArray())
+            {
+                $teacherQuery = "SELECT * FROM Users WHERE ID == ".$classDB["Teacher"];
+                if($teacherDB = $db->query($teacherQuery)->fetchArray())
                 {
-                    $teacherQuery = "SELECT * FROM Users WHERE ID == ".$classDB["Teacher"];
-                    if($teacherDB = $db->query($teacherQuery)->fetchArray())
-                    {
-                        echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"];
-                    }
+                    echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"]."<br>";
                 }
             }
-
-            fclose($handle);
         }
+
+        fclose($handle);
     }else{
         echo "false";
     }
