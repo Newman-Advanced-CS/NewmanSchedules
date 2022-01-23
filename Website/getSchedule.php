@@ -7,9 +7,10 @@
     if($result = $db->query($query)->fetchArray())
     {
         // open schedule file
-        $handle = fopen("./schedules/".$userID, "r");
+        $path = "./schedules/".$userID;
+        $handle = fopen($path, "r");
         while (!feof($handle)) {
-            $line = fgets($handle);
+            $line = fgets($handle, filesize($path));
 
             // process the line read.
             $classData = explode(',', $line);
@@ -20,7 +21,7 @@
                 $teacherQuery = "SELECT * FROM Users WHERE ID == ".$classDB["Teacher"];
                 if($teacherDB = $db->query($teacherQuery)->fetchArray())
                 {
-                    echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"]."<br>";
+                    echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"]."\n";
                 }
             }
         }

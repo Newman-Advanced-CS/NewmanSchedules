@@ -131,7 +131,7 @@ public class NewmanSchedules {
         // Get schedule
         String schedule = "ERROR";
         try {
-            schedule = "Your Classes: " + WebRequest.GET("/getSchedule.php?ID=" + user.getID() + "&pass=" + user.getPassword());
+            schedule = "Your Classes: \n" + WebRequest.GET("/getSchedule.php?ID=" + user.getID() + "&pass=" + user.getPassword());
         } catch (IOException e) {
             e.printStackTrace();
         }
