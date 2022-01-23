@@ -110,7 +110,7 @@ public class NewmanSchedules {
 
     // Main window
     static int WIDTH = 500;
-    static int HEIGHT = 700;
+    static int HEIGHT = 500;
 
     public static void MainWindow() {
         // Create window
@@ -122,14 +122,16 @@ public class NewmanSchedules {
         // Add header with users first name
         JPanel header = Panel.CreatePanel(WIDTH, 50, false);
         header.setBackground(Color.BLUE);
-        JLabel label = Text.CreateLabel("Hi " + user.getFirstName(), new Dimension(300, 40), SwingConstants.CENTER);
+        JLabel label = Text.CreateLabel("Hi " + user.getFirstName() + "!", new Dimension(300, 40), SwingConstants.CENTER);
         label.setFont(ubuntuFontBold);
         label.setForeground(Color.WHITE);
         Panel.AddComponent(header, label, BorderLayout.CENTER);
         Window.AddComponent(mainWindow, header, BorderLayout.NORTH);
 
+        // Get schedule
+
         // Center Text
-        JLabel text = Text.CreateLabel("Loading Schedule... (jk not really, creating GUI in java is hard)", new Dimension(300, 40), SwingConstants.CENTER);
+        JLabel text = Text.CreateLabel("Loading Schedule...", new Dimension(WIDTH/2, 40), SwingConstants.CENTER);
         Window.AddComponent(mainWindow, text, BorderLayout.CENTER);
 
         // Display it
