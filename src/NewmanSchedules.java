@@ -129,9 +129,15 @@ public class NewmanSchedules {
         Window.AddComponent(mainWindow, header, BorderLayout.NORTH);
 
         // Get schedule
+        String schedule = "ERROR";
+        try {
+            schedule = "Your Classes: " + WebRequest.GET("/getSchedule.php?user=" + user.getID() + "&pass=" + user.getPassword());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Center Text
-        JLabel text = Text.CreateLabel("Loading Schedule...", new Dimension(WIDTH/2, 40), SwingConstants.CENTER);
+        JLabel text = Text.CreateLabel(schedule, new Dimension(WIDTH/2, 40), SwingConstants.CENTER);
         Window.AddComponent(mainWindow, text, BorderLayout.CENTER);
 
         // Display it

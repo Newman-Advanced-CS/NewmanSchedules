@@ -5,6 +5,7 @@ public class User {
     String firstName;
     String lastName;
     int year;
+    String password;
 
     enum UserType{
         Student,
@@ -24,6 +25,7 @@ public class User {
         this.lastName = dataArray[1];
         this.year = Integer.parseInt(dataArray[2]);
         this.type = UserType.valueOf(dataArray[3]);
+        this.password = dataArray[4];
     }
 
     // Getters
@@ -45,5 +47,9 @@ public class User {
 
     public UserType getType() {
         return type;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

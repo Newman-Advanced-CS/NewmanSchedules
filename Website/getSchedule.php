@@ -20,14 +20,13 @@
                     if($teacherDB = $db->query($teacherQuery)->fetchArray())
                     {
                         echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"];
-                        return;
                     }
                 }
             }
 
             fclose($handle);
         }
+    }else{
+        echo "false";
     }
-
-    echo "false";
 ?>
