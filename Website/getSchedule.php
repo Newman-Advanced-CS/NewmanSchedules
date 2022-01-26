@@ -15,7 +15,7 @@
             // process the line read.
             $classData = explode(',', $line);
             $classTime = $classData[0];
-            $classQuery = 'SELECT * FROM Class WHERE ID == "'.$classData[1].'"';
+            $classQuery = 'SELECT * FROM Class WHERE ID == "'.trim($classData[1]).'"';
             if($classDB = $db->query($classQuery)->fetchArray())
             {
                 $teacherQuery = "SELECT * FROM Users WHERE ID == ".$classDB["Teacher"];
