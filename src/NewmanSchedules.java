@@ -131,13 +131,14 @@ public class NewmanSchedules {
         // Get schedule
         String schedule = "ERROR";
         try {
-            schedule = "Your Classes: \n" + WebRequest.GET("/getSchedule.php?ID=" + user.getID() + "&pass=" + user.getPassword());
+            schedule = "<html>Your Classes: <br><hr>" + WebRequest.GET("/getSchedule.php?ID=" + user.getID() + "&pass=" + user.getPassword()) + "</html>";
         } catch (IOException e) {
             e.printStackTrace();
         }
 
         // Center Text
         JLabel text = Text.CreateLabel(schedule, new Dimension(WIDTH/2, HEIGHT), SwingConstants.CENTER);
+        text.setVerticalAlignment(SwingConstants.CENTER);
         Window.AddComponent(mainWindow, text, BorderLayout.CENTER);
 
         // Display it

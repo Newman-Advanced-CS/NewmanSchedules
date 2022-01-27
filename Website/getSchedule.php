@@ -21,7 +21,7 @@
                 $teacherQuery = "SELECT * FROM Users WHERE ID == ".$classDB["Teacher"];
                 if($teacherDB = $db->query($teacherQuery)->fetchArray())
                 {
-                    echo "[".$classTime."] ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"]."\n";
+                    echo "<strong>[".$classTime."]</strong> ".$classDB["Name"]." w/ ".$teacherDB["FirstName"]." ".$teacherDB["LastName"]."<br>";
                 }
             }
         }
