@@ -14,6 +14,11 @@ public class User {
     }
     UserType type;
 
+    public static boolean CheckForUser()
+    {
+        return true;
+    }
+
     // Constructor
     public User(int ID, String pass) throws IOException {
         this.ID = ID;

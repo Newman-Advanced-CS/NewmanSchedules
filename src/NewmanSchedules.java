@@ -40,9 +40,9 @@ public class NewmanSchedules {
     public static void LoginWindow() {
         // Create window
         JFrame loginWindow = Window.CreateWindow("Newman Schedules");
-        loginWindow.setMinimumSize(new Dimension(loginWIDTH, loginHEIGHT));
+        loginWindow.setMaximumSize(new Dimension(loginWIDTH, loginHEIGHT));
         loginWindow.getContentPane().setBackground(Color.WHITE);
-        loginWindow.setResizable(false);
+        loginWindow.setResizable(true);
 
         // Add header
         JPanel header = Panel.CreatePanel(WIDTH, 50, false);
@@ -54,22 +54,27 @@ public class NewmanSchedules {
         Window.AddComponent(loginWindow, header, BorderLayout.PAGE_START);
 
         // Login screen
-        JPanel login = Panel.CreatePanel(loginWIDTH / 2, loginHEIGHT / 2, false);
+        JPanel login = Panel.CreatePanel(loginWIDTH / 2, loginHEIGHT / 2, true);
         login.setBackground(Color.WHITE);
-        Dimension boxDimensions = new Dimension(10, 15);
+        Dimension boxDimensions = new Dimension(loginWIDTH/15, loginHEIGHT/4);
         float[] textBoxColor = new float[3];
         Color.RGBtoHSB(230, 230, 230, textBoxColor);
 
         JTextField emailBox = TextInput.CreateTextInput("Email...", boxDimensions, ubuntuFont);
+        emailBox.setMinimumSize(boxDimensions);
         JTextField passBox = TextInput.CreatePasswordInput("", boxDimensions, ubuntuFont);
+        passBox.setMinimumSize(boxDimensions);
         emailBox.setBackground(Color.getHSBColor(textBoxColor[0], textBoxColor[1], textBoxColor[2]));
         passBox.setBackground(Color.getHSBColor(textBoxColor[0], textBoxColor[1], textBoxColor[2]));
+
+        login.add(Box.createRigidArea(new Dimension(0, 10)));
         Panel.AddComponent(login, emailBox, BorderLayout.PAGE_START);
+        login.add(Box.createRigidArea(new Dimension(0, 10)));
         Panel.AddComponent(login, passBox, BorderLayout.PAGE_END);
+        login.add(Box.createRigidArea(new Dimension(0, 10)));
 
         // Button
         JButton submit = new JButton("LOGIN");
-        submit.setSize(new Dimension(loginWIDTH, loginHEIGHT / 2));
         submit.addActionListener(e -> {
             // Get input and perform web request
             String email = emailBox.getText();
@@ -101,9 +106,8 @@ public class NewmanSchedules {
             }
         });
 
-        Window.AddComponent(loginWindow, submit, BorderLayout.SOUTH);
+        Window.AddComponent(loginWindow, submit, BorderLayout.PAGE_END);
         Window.AddComponent(loginWindow, login, BorderLayout.CENTER);
-
         // Display it
         Window.DisplayWindow(loginWindow);
     }
