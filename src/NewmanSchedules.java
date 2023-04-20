@@ -1,18 +1,18 @@
+import DSYS.IO;
 import NewmanSchedulesGUI.Panel;
 import NewmanSchedulesGUI.Text;
 import NewmanSchedulesGUI.TextInput;
 import NewmanSchedulesGUI.Window;
+import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 
 public class NewmanSchedules {
-
-    // current session user
-    protected static User user;
 
     // Fonts
     static Font ubuntuFontBold;
@@ -30,86 +30,7 @@ public class NewmanSchedules {
             e.printStackTrace();
         }
 
-        LoginWindow();
-    }
-
-    // Login window
-    static int loginWIDTH = 400;
-    static int loginHEIGHT = 100;
-
-    public static void LoginWindow() {
-        // Create window
-        JFrame loginWindow = Window.CreateWindow("Newman Schedules");
-        loginWindow.setMaximumSize(new Dimension(loginWIDTH, loginHEIGHT));
-        loginWindow.getContentPane().setBackground(Color.WHITE);
-        loginWindow.setResizable(true);
-
-        // Add header
-        JPanel header = Panel.CreatePanel(WIDTH, 50, false);
-        header.setBackground(Color.BLUE);
-        JLabel label = Text.CreateLabel("Login", new Dimension(300, 40), SwingConstants.CENTER);
-        label.setFont(ubuntuFontBold);
-        label.setForeground(Color.WHITE);
-        Panel.AddComponent(header, label, BorderLayout.CENTER);
-        Window.AddComponent(loginWindow, header, BorderLayout.PAGE_START);
-
-        // Login screen
-        JPanel login = Panel.CreatePanel(loginWIDTH / 2, loginHEIGHT / 2, true);
-        login.setBackground(Color.WHITE);
-        Dimension boxDimensions = new Dimension(loginWIDTH/15, loginHEIGHT/4);
-        float[] textBoxColor = new float[3];
-        Color.RGBtoHSB(230, 230, 230, textBoxColor);
-
-        JTextField emailBox = TextInput.CreateTextInput("Email...", boxDimensions, ubuntuFont);
-        emailBox.setMinimumSize(boxDimensions);
-        JTextField passBox = TextInput.CreatePasswordInput("", boxDimensions, ubuntuFont);
-        passBox.setMinimumSize(boxDimensions);
-        emailBox.setBackground(Color.getHSBColor(textBoxColor[0], textBoxColor[1], textBoxColor[2]));
-        passBox.setBackground(Color.getHSBColor(textBoxColor[0], textBoxColor[1], textBoxColor[2]));
-
-        login.add(Box.createRigidArea(new Dimension(0, 10)));
-        Panel.AddComponent(login, emailBox, BorderLayout.PAGE_START);
-        login.add(Box.createRigidArea(new Dimension(0, 10)));
-        Panel.AddComponent(login, passBox, BorderLayout.PAGE_END);
-        login.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        // Button
-        JButton submit = new JButton("LOGIN");
-        submit.addActionListener(e -> {
-            // Get input and perform web request
-            String email = emailBox.getText();
-            String pass = passBox.getText();
-
-            String loginResult = "";
-            try {
-                loginResult = WebRequest.GET("/login.php?email=" + email + "&pass=" + pass);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-            System.out.println(loginResult);
-
-            Window.RemoveWindow(loginWindow);
-            if (loginResult.equals("false")) {
-                // Alert
-                Alert("Incorrect Email/Password", e1 -> {
-                    LoginWindow();
-                });
-            }else{
-                // Log in
-                try {
-                    user = new User(Integer.parseInt(loginResult), pass);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                // Load main window
-                MainWindow();
-            }
-        });
-
-        Window.AddComponent(loginWindow, submit, BorderLayout.PAGE_END);
-        Window.AddComponent(loginWindow, login, BorderLayout.CENTER);
-        // Display it
-        Window.DisplayWindow(loginWindow);
+        MainWindow();
     }
 
     // Main window
@@ -126,7 +47,7 @@ public class NewmanSchedules {
         // Add header with users first name
         JPanel header = Panel.CreatePanel(WIDTH, 50, false);
         header.setBackground(Color.BLUE);
-        JLabel label = Text.CreateLabel("Hi " + user.getFirstName() + "!", new Dimension(300, 40), SwingConstants.CENTER);
+        JLabel label = Text.CreateLabel("Your Schedule:", new Dimension(300, 40), SwingConstants.CENTER);
         label.setFont(ubuntuFontBold);
         label.setForeground(Color.WHITE);
         Panel.AddComponent(header, label, BorderLayout.CENTER);
@@ -134,38 +55,15 @@ public class NewmanSchedules {
 
         // Get schedule
         String schedule = "ERROR";
-        try {
-            schedule = "<html>Your Classes: <br><hr>" + WebRequest.GET("/getSchedule.php?ID=" + user.getID() + "&pass=" + user.getPassword()) + "</html>";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        schedule = "<html>" + IO.read("src/schedule.txt") + "</html>";
 
         // Center Text
-        JLabel text = Text.CreateLabel(schedule, new Dimension(WIDTH/2, HEIGHT), SwingConstants.CENTER);
+        JLabel text = Text.CreateLabel(schedule, new Dimension(WIDTH/20, HEIGHT), SwingConstants.CENTER);
         text.setVerticalAlignment(SwingConstants.CENTER);
         Window.AddComponent(mainWindow, text, BorderLayout.CENTER);
 
         // Display it
         Window.DisplayWindow(mainWindow);
     }
-
-    public static void Alert(String prompt, ActionListener callback)
-    {
-        JFrame alert = Window.CreateWindow("Alert");
-        alert.setMinimumSize(new Dimension(100, 100));
-        alert.getContentPane().setBackground(Color.WHITE);
-        alert.setResizable(false);
-
-        JLabel retryAlert = Text.CreateLabel(prompt, new Dimension(loginWIDTH, loginHEIGHT / 4), SwingConstants.CENTER);
-        Window.AddComponent(alert, retryAlert, BorderLayout.CENTER);
-
-        JButton OK = new JButton("OK");
-        OK.addActionListener(callback);
-        OK.addActionListener(e -> {
-            Window.RemoveWindow(alert);
-        });
-        Window.AddComponent(alert, OK, BorderLayout.SOUTH);
-
-        Window.DisplayWindow(alert);
-    }
 }
+
